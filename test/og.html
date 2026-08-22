@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!--
+  og.png 의 원본. 배포되는 파일이 아니라 그림을 만드는 틀이다.
+  (site/ 밖에 있으므로 공개되지 않는다 — wrangler 의 directory 는 ./site 다)
+
+  다시 만들기:  npm run og
+  1200×630 은 트위터·카톡·슬랙이 공통으로 기대하는 크기다.
+-->
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    width: 1200px; height: 630px; overflow: hidden;
+    background: #ffffff; color: #1b1b1a;
+    font: 15px/1.6 "Malgun Gothic", "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 0 84px; gap: 26px;
+  }
+  .brand { font-size: 22px; letter-spacing: .1em; color: #6b6b66; text-transform: lowercase; }
+  h1 { font-size: 62px; line-height: 1.18; letter-spacing: -.02em; }
+  .badges { display: flex; gap: 10px; }
+  .badges span {
+    font-size: 20px; color: #2f6f4f; background: #edf4ef;
+    border: 1px solid rgba(47,111,79,.3); border-radius: 999px; padding: 7px 20px;
+  }
+  /* 이 도구가 실제로 파는 그림 — 숫자가 줄어드는 장면. */
+  .rows { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .row {
+    display: flex; align-items: center; gap: 16px;
+    background: #f6f6f4; border: 1px solid #e4e4df; border-radius: 12px;
+    padding: 14px 22px; font-size: 24px; width: 720px;
+  }
+  .row .n { color: #6b6b66; flex: 1; }
+  .row .a { color: #6b6b66; text-decoration: line-through; }
+  .row .arrow { color: #6b6b66; }
+  .row .b { font-weight: 700; }
+  .row .cut { color: #2f6f4f; font-weight: 700; width: 92px; text-align: right; }
+</style>
+</head>
+<body>
+  <div class="brand">prelaps</div>
+  <h1>이미지 일괄 리사이즈<br>+ WebP 변환</h1>
+  <div class="badges">
+    <span>업로드 없음</span>
+    <span>장수 제한 없음</span>
+    <span>무료</span>
+  </div>
+  <div class="rows">
+    <div class="row">
+      <span class="n">IMG_4821.jpg</span>
+      <span class="a">3.8 MB</span><span class="arrow">→</span>
+      <span class="b">412 KB</span><span class="cut">-89%</span>
+    </div>
+    <div class="row">
+      <span class="n">DSC_0192.jpg</span>
+      <span class="a">2.7 MB</span><span class="arrow">→</span>
+      <span class="b">318 KB</span><span class="cut">-88%</span>
+    </div>
+  </div>
+</body>
+</html>

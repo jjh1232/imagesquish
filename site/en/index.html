@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ko/index.html 이 원본이다. 구조를 바꿀 때는 그쪽을 먼저 고치고 여기로 옮긴다.
+     "왜 이렇게 했나" 주석은 ko 에만 둔다 — 세 벌로 늘리면 한쪽만 고쳐 어긋난다.
+     여기 남긴 주석은 번역할 때 놓치기 쉬운 것만이다. -->
+
+<title>Bulk Image Resizer + WebP Converter — right in your browser | prelaps</title>
+<meta name="description" content="Resize many images at once and convert them to WebP, JPEG or PNG, then download the lot as a zip. Nothing is uploaded, and there is no limit on how many. Free, no install.">
+
+<link rel="canonical" href="https://prelaps.com/imagesquish/en/">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prelaps.com/imagesquish/en/">
+<meta property="og:title" content="Bulk Image Resizer + WebP Converter">
+<meta property="og:description" content="Resize many images at once and convert them to WebP, JPEG or PNG, then download the lot as a zip. Nothing is uploaded, and there is no limit on how many.">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="A list of images with their before and after file sizes shrinking side by side">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="en_US">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Bulk Image Resizer + WebP Converter",
+  "url": "https://prelaps.com/imagesquish/en/",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "featureList": [
+    "Resize many images at once",
+    "Convert to WebP, JPEG or PNG",
+    "Download everything as one zip",
+    "Runs entirely in the browser — nothing is uploaded",
+    "No limit on the number of files"
+  ],
+  "description": "Resize many images at once and convert them to WebP, JPEG or PNG, then download the lot as a zip. Nothing is uploaded, and there is no limit on how many."
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <div>
+    <a class="home" href="/en">prelaps</a>
+    <h1>Bulk Image Resizer + WebP Converter</h1>
+    <p class="tagline">Shrink and convert a whole batch at once, then grab it as a zip. Your files never leave this browser.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/" hreflang="ko">한국어</a>
+    <a href="../en/" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<ul class="badges">
+  <li>No upload</li>
+  <li>No file limit</li>
+  <li>Free</li>
+</ul>
+
+<div class="layout">
+
+<div class="main">
+
+  <div id="drop" class="drop" tabindex="0" role="button" aria-describedby="drophint">
+    <p class="drop-main">Drop your images here</p>
+    <p id="drophint" class="drop-sub">
+      <button id="pick" class="linkish" type="button">Choose files</button>
+      · or paste with <kbd>Ctrl</kbd>+<kbd>V</kbd>
+    </p>
+    <input id="file" type="file" accept="image/*" multiple hidden>
+  </div>
+
+  <p id="manyNote" class="note warn" hidden></p>
+
+  <ul id="files" class="files"></ul>
+</div>
+
+<aside class="side">
+
+  <!-- ⚠ data-* 값은 번역하지 않는다. JS 가 읽는 것은 이 값이지 라벨이 아니다. -->
+  <div class="panel">
+
+    <div class="set">
+      <h2>Size</h2>
+      <div class="seg" id="sizeMode">
+        <button class="sm on" data-mode="keep" type="button">Keep original</button>
+        <button class="sm" data-mode="long" type="button">Long edge</button>
+        <button class="sm" data-mode="wh" type="button">Width×Height</button>
+        <button class="sm" data-mode="pct" type="button">Percent</button>
+      </div>
+
+      <div class="row" id="sizeValue" hidden>
+        <input id="sizeNum" class="num" type="number" min="1" step="1" value="1920">
+        <span id="sizeUnit" class="lb">px</span>
+      </div>
+
+      <div class="row" id="sizeWH" hidden>
+        <input id="sizeW" class="num wh" type="number" min="1" step="1" placeholder="Width" aria-label="Maximum width in pixels">
+        <span class="lb">×</span>
+        <input id="sizeH" class="num wh" type="number" min="1" step="1" placeholder="Height" aria-label="Maximum height in pixels">
+        <span class="lb">px</span>
+      </div>
+
+      <div class="seg" id="fitMode" style="margin-top:8px" hidden>
+        <button class="sm on" data-fit="contain" type="button">Fit inside</button>
+        <button class="sm" data-fit="cover" type="button">Exactly this size</button>
+      </div>
+
+      <label id="upscaleRow" class="check" hidden>
+        <input id="upscale" type="checkbox">
+        Allow enlarging past the original
+      </label>
+
+      <p id="sizeNote" class="note" hidden>Keeps the aspect ratio and never enlarges past the original.</p>
+    </div>
+
+    <div class="set">
+      <h2>Format</h2>
+      <div class="seg" id="format">
+        <button class="sm on" data-fmt="image/webp" type="button">WebP</button>
+        <button class="sm" data-fmt="image/jpeg" type="button">JPEG</button>
+        <button class="sm" data-fmt="image/png" type="button">PNG</button>
+        <button class="sm" data-fmt="keep" type="button">Keep original</button>
+      </div>
+    </div>
+
+    <div class="set">
+      <h2>Quality <span id="qval" class="lb">0.80</span></h2>
+      <input id="quality" class="range" type="range" min="0.4" max="1" step="0.05" value="0.8">
+      <p id="qnote" class="note" hidden>PNG is lossless, so the quality setting does not apply.
+        Photos saved as PNG usually get bigger — use WebP for photos.</p>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <div class="bar runbar">
+      <button id="run" class="primary" type="button" disabled>Convert</button>
+      <button id="stop" type="button" hidden>Stop</button>
+    </div>
+    <div id="progress" class="progress" hidden>
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <span id="status" class="status"></span>
+  </div>
+
+  <div id="summary" class="panel summary" hidden>
+    <h2>Result</h2>
+    <div class="sum-nums">
+      <span class="sum-before">12.4 MB</span>
+      <span class="sum-arrow">→</span>
+      <span class="sum-after">1.8 MB</span>
+      <span class="sum-cut">85% smaller · 30 images</span>
+    </div>
+    <p id="sumWarn" class="sum-warn" hidden></p>
+    <div class="sum-act">
+      <button id="zip" class="primary" type="button">Download as zip</button>
+    </div>
+  </div>
+
+</aside>
+
+</div>
+
+<section class="about">
+
+  <details>
+    <summary><h2>Why resizing and converting belong on one screen</h2></summary>
+    <p>
+    Free image tools usually split the job in two: one site resizes, another converts.
+    To get thirty photos ready for a blog post at both a smaller size and in WebP, you
+    upload the same files twice and download them twice. That is also the point where you
+    lose track of which folder holds the half-finished version.
+    </p>
+    <p>
+    Here you set the size, the format and the quality on one screen and run it once.
+    Take the result as a single zip, or pick out just the ones you want.
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>What "no upload" means</h2></summary>
+    <p>
+    This page never sends your images to a server. When you drop a file in, the browser
+    opens it, resizes it and saves it again, all on your own machine. If your connection
+    drops after the page has loaded, it keeps working.
+    </p>
+    <p>
+    That is why there is <strong>no size cap and no limit on the number of files.</strong>
+    The walls free tools usually put up — "up to 50MB", "20 images on the free plan" — come
+    from server bills, not from any technical limit. With nothing passing through a server,
+    there is no reason to build them.
+    </p>
+    <p>
+    The trade is that the work happens on your device, so a large batch takes time. That is
+    what the progress bar and the stop button are for. Stop halfway and everything finished
+    up to that point is still yours to download.
+    </p>
+    <p>
+    Visit statistics (Google Analytics) are collected, so we can see which settings people
+    actually use and decide what to build next. <strong>Your images and their filenames are
+    not part of that</strong> — they never leave your device, so there is nothing to send.
+    The details are in the <a href="/en/privacy#imagesquish">privacy policy</a>.
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>What WebP is, and when to use it</h2></summary>
+    <p>
+    WebP is an image format Google made for the web. For the same photo at the same
+    perceived quality it is typically 25–35% smaller than JPEG. Every browser released
+    since 2020 supports it, so for anything headed to a website WebP is a fine default.
+    </p>
+    <p>
+    But <strong>no single format is right for every image.</strong> It depends on what the
+    picture is made of.
+    </p>
+    <ul>
+    <li>
+      <strong>Photographs</strong> — WebP. Colours shift gradually, which is exactly what
+      lossy compression handles well. Choose JPEG instead if you need maximum compatibility.
+    </li>
+    <li>
+      <strong>Screenshots, logos, icons, diagrams, QR codes</strong> — PNG.
+      Pictures built from lines, text and large flat areas are smallest as lossless PNG.
+      Push them through WebP or JPEG and the file <strong>grows</strong> while the edges of
+      the text turn mushy.
+    </li>
+    <li>
+      <strong>Anything with a transparent background</strong> — WebP or PNG. JPEG cannot
+      store transparency, so transparent areas come out white.
+    </li>
+    </ul>
+    <p>
+    The quality slider only affects WebP and JPEG. PNG is lossless, so there is no quality
+    to trade and the slider switches off. The default of 0.8 is the point where photos are
+    hard to tell apart from the original while the file size drops sharply.
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>Four ways to set the size</h2></summary>
+    <ul>
+    <li>
+      <strong>Keep original</strong> — leaves the dimensions alone and only changes the
+      format and quality.
+    </li>
+    <li>
+      <strong>Long edge</strong> — measures whichever side is longer. It is the
+      <strong>only option that treats portrait and landscape shots alike</strong>, which is
+      what you want for a camera roll dump. 1920 is a sensible number for the web.
+    </li>
+    <li>
+      <strong>Width×Height</strong> — sets a box. Fill in one field and only that side is
+      constrained while the other follows the aspect ratio ("1200 wide, height whatever it
+      needs to be"). From there it splits again. <strong>Fit inside</strong> crops nothing,
+      so only one side touches the box — drop a portrait photo into an 800×600 box and you
+      get 571×600. <strong>Exactly this size</strong> crops from the centre so every image
+      comes out 800×600, which is what you need when the dimensions are a specification,
+      like product photos.
+    </li>
+    <li>
+      <strong>Percent</strong> — scales relative to each original. Handy when the originals
+      are all different sizes and you just want everything at half.
+    </li>
+    </ul>
+    <p>
+    By default nothing is <strong>enlarged past its original size.</strong> Asking for 1920
+    from an 800px image means inventing pixels that were never there: it looks soft and the
+    file gets bigger. If hitting an exact specification matters more, tick
+    "Allow enlarging past the original".
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>Common questions</h2></summary>
+
+    <h3>Is there really no limit on how many files?</h3>
+    <p>
+    There is not. Images are processed one at a time and each is released as soon as it is
+    done, so only ever one is open at once. Whether it is 100 or 300, the wait gets longer
+    but nothing jams. Past 100 you get a note that it may take a while — a warning, not a wall.
+    </p>
+
+    <h3>Will portrait photos come out sideways?</h3>
+    <p>
+    No. Phones often store a photo in one orientation and attach a note saying "rotate this
+    much when displaying" (EXIF Orientation). Tools that miss the note lay portrait shots on
+    their side. This one reads it first and rotates the pixels for real before saving.
+    </p>
+
+    <h3>Does it handle iPhone HEIC files?</h3>
+    <p>
+    That depends on the browser. Safari can open HEIC, so those files go through normally.
+    Chrome, Edge and Firefox cannot read HEIC and those files are skipped. On an iPhone,
+    open this page in Safari. Note that HEIC cannot be written back out either, so
+    "Keep original" saves those as WebP.
+    </p>
+
+    <h3>My files came out bigger than the originals</h3>
+    <p>
+    Usually one of two things. Converting an already-compressed JPEG or WebP
+    <strong>to PNG</strong> makes it bigger — PNG cannot bring back what was thrown away,
+    yet it stores every pixel exactly. The other way round, a screenshot or QR code
+    <strong>converted to WebP or JPEG</strong> also grows. The result panel tells you which
+    of the two happened, so you can change the setting it points at.
+    </p>
+
+    <h3>What about animated GIFs?</h3>
+    <p>
+    Only the first frame is converted; the animation is lost and you get a still image.
+    The list says so on that row, so you can see it before downloading.
+    </p>
+
+    <h3>Does this modify my original files?</h3>
+    <p>
+    It does not. The browser can only read the files you drop in, never overwrite them.
+    Results are always saved as new files.
+    </p>
+
+    <h3>Can I change a setting and try again?</h3>
+    <p>
+    Without adding the files again, yes. Change whatever you like and press Convert again;
+    the new settings are applied to the same files.
+    </p>
+  </details>
+
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="/en/privacy#imagesquish">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+<noscript>
+  <p style="color:var(--err)">This tool processes images inside your browser, so it needs JavaScript.</p>
+</noscript>
+
+<script type="module" src="../src/main.js"></script>
+</body>
+</html>

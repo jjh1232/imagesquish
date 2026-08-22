@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ko/index.html 이 원본이다. 구조를 바꿀 때는 그쪽을 먼저 고치고 여기로 옮긴다.
+     "왜 이렇게 했나" 주석은 ko 에만 둔다 — 세 벌로 늘리면 한쪽만 고쳐 어긋난다.
+     여기 남긴 주석은 번역할 때 놓치기 쉬운 것만이다. -->
+
+<title>画像の一括リサイズ + WebP 変換 — アップロードなしでブラウザ内処理 | prelaps</title>
+<meta name="description" content="複数の画像をまとめてリサイズし、WebP・JPEG・PNG に変換して zip でダウンロードします。ファイルは端末の外に出ず、枚数制限もありません。インストール不要・無料。">
+
+<link rel="canonical" href="https://prelaps.com/imagesquish/ja/">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://prelaps.com/imagesquish/ja/">
+<meta property="og:title" content="画像の一括リサイズ + WebP 変換">
+<meta property="og:description" content="複数の画像をまとめてリサイズし、WebP・JPEG・PNG に変換して zip でダウンロードします。ファイルは端末の外に出ず、枚数制限もありません。">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="複数の画像の変換前後の容量が並んで小さくなっていく画面">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:locale" content="ja_JP">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "画像の一括リサイズ + WebP 変換",
+  "url": "https://prelaps.com/imagesquish/ja/",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": "ja",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "featureList": [
+    "複数画像の一括リサイズ",
+    "WebP・JPEG・PNG への変換",
+    "zip でまとめてダウンロード",
+    "ブラウザ内だけで処理 — アップロードなし",
+    "枚数制限なし"
+  ],
+  "description": "複数の画像をまとめてリサイズし、WebP・JPEG・PNG に変換して zip でダウンロードします。ファイルは端末の外に出ず、枚数制限もありません。"
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <div>
+    <a class="home" href="/ja">prelaps</a>
+    <h1>画像の一括リサイズ + WebP 変換</h1>
+    <p class="tagline">複数の画像をまとめて縮小・変換し、zip で受け取ります。ファイルはこのブラウザの外に出ません。</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/" hreflang="ko">한국어</a>
+    <a href="../en/" hreflang="en">English</a>
+    <a href="../ja/" aria-current="true" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<ul class="badges">
+  <li>アップロードなし</li>
+  <li>枚数制限なし</li>
+  <li>無料</li>
+</ul>
+
+<div class="layout">
+
+<div class="main">
+
+  <div id="drop" class="drop" tabindex="0" role="button" aria-describedby="drophint">
+    <p class="drop-main">ここに画像をドラッグしてください</p>
+    <p id="drophint" class="drop-sub">
+      <button id="pick" class="linkish" type="button">ファイルを選択</button>
+      · <kbd>Ctrl</kbd>+<kbd>V</kbd> で貼り付けもできます
+    </p>
+    <input id="file" type="file" accept="image/*" multiple hidden>
+  </div>
+
+  <p id="manyNote" class="note warn" hidden></p>
+
+  <ul id="files" class="files"></ul>
+</div>
+
+<aside class="side">
+
+  <!-- ⚠ data-* 값은 번역하지 않는다. JS 가 읽는 것은 이 값이지 라벨이 아니다. -->
+  <div class="panel">
+
+    <div class="set">
+      <h2>サイズ</h2>
+      <div class="seg" id="sizeMode">
+        <button class="sm on" data-mode="keep" type="button">元のまま</button>
+        <button class="sm" data-mode="long" type="button">長辺</button>
+        <button class="sm" data-mode="wh" type="button">幅×高さ</button>
+        <button class="sm" data-mode="pct" type="button">パーセント</button>
+      </div>
+
+      <div class="row" id="sizeValue" hidden>
+        <input id="sizeNum" class="num" type="number" min="1" step="1" value="1920">
+        <span id="sizeUnit" class="lb">px</span>
+      </div>
+
+      <div class="row" id="sizeWH" hidden>
+        <input id="sizeW" class="num wh" type="number" min="1" step="1" placeholder="幅" aria-label="最大の幅（ピクセル）">
+        <span class="lb">×</span>
+        <input id="sizeH" class="num wh" type="number" min="1" step="1" placeholder="高さ" aria-label="最大の高さ（ピクセル）">
+        <span class="lb">px</span>
+      </div>
+
+      <div class="seg" id="fitMode" style="margin-top:8px" hidden>
+        <button class="sm on" data-fit="contain" type="button">枠に収める</button>
+        <button class="sm" data-fit="cover" type="button">ちょうどこの寸法</button>
+      </div>
+
+      <label id="upscaleRow" class="check" hidden>
+        <input id="upscale" type="checkbox">
+        元画像より大きくすることを許可
+      </label>
+
+      <p id="sizeNote" class="note" hidden>比率は保たれ、元画像より大きくはしません。</p>
+    </div>
+
+    <div class="set">
+      <h2>形式</h2>
+      <div class="seg" id="format">
+        <button class="sm on" data-fmt="image/webp" type="button">WebP</button>
+        <button class="sm" data-fmt="image/jpeg" type="button">JPEG</button>
+        <button class="sm" data-fmt="image/png" type="button">PNG</button>
+        <button class="sm" data-fmt="keep" type="button">元のまま</button>
+      </div>
+    </div>
+
+    <div class="set">
+      <h2>画質 <span id="qval" class="lb">0.80</span></h2>
+      <input id="quality" class="range" type="range" min="0.4" max="1" step="0.05" value="0.8">
+      <p id="qnote" class="note" hidden>PNG は可逆圧縮のため画質設定は適用されません。
+        写真を PNG にすると容量はむしろ増えます — 写真には WebP を勧めます。</p>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <div class="bar runbar">
+      <button id="run" class="primary" type="button" disabled>変換</button>
+      <button id="stop" type="button" hidden>中断</button>
+    </div>
+    <div id="progress" class="progress" hidden>
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <span id="status" class="status"></span>
+  </div>
+
+  <div id="summary" class="panel summary" hidden>
+    <h2>結果</h2>
+    <div class="sum-nums">
+      <span class="sum-before">12.4 MB</span>
+      <span class="sum-arrow">→</span>
+      <span class="sum-after">1.8 MB</span>
+      <span class="sum-cut">85% 削減 · 30枚</span>
+    </div>
+    <p id="sumWarn" class="sum-warn" hidden></p>
+    <div class="sum-act">
+      <button id="zip" class="primary" type="button">zip でダウンロード</button>
+    </div>
+  </div>
+
+</aside>
+
+</div>
+
+<section class="about">
+
+  <details>
+    <summary><h2>リサイズと変換が同じ画面にある理由</h2></summary>
+    <p>
+    無料の画像ツールは、リサイズのサイトと形式変換のサイトが別々になっていることがほとんどです。
+    写真を30枚、ブログ用のサイズに縮めたうえで WebP にもしたい場合、同じファイルを二度アップロードし、
+    二度ダウンロードすることになります。途中の結果をどこに置いたか分からなくなるのも、たいていそのときです。
+    </p>
+    <p>
+    このツールはサイズ・形式・画質を一つの画面で決めて一度に処理します。
+    結果は zip でまとめて受け取ることも、必要なものだけ選んで受け取ることもできます。
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>「アップロードなし」の意味</h2></summary>
+    <p>
+    このページは画像をサーバーに送りません。ファイルをドラッグして置くと、ブラウザが自分の中で
+    開き、縮小し、保存し直します。ページを開いたあとであれば、通信が切れてもそのまま動きます。
+    </p>
+    <p>
+    だから<strong>容量制限も枚数制限もありません。</strong>無料ツールがよく掲げる「50MB まで」
+    「無料プランは20枚まで」といった壁は、サーバー費用から来るものであって技術的な限界ではありません。
+    他人のサーバーを通らないなら、その壁を立てる理由がありません。
+    </p>
+    <p>
+    そのかわり処理する力はお使いの端末から出るので、枚数が多いほど時間がかかります。
+    進捗表示と中断ボタンがあるのはそのためです。途中で止めても、そこまで終わった分はそのまま受け取れます。
+    </p>
+    <p>
+    アクセス統計（Google Analytics）は取得します。どの設定がよく使われるかを見て、次に何を作るかを
+    決めるためです。<strong>画像そのものやファイル名はそこに含まれません</strong> —
+    そもそも端末の外に出ないので送りようがありません。
+    詳しくは<a href="/ja/privacy#imagesquish">プライバシーポリシー</a>に記載しています。
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>WebP とは何か、いつ使うか</h2></summary>
+    <p>
+    WebP は Google がウェブ向けに作った画像形式です。同じ写真を同じ見た目の品質で収めるとき、
+    JPEG よりおおむね 25〜35% 小さくなります。2020年以降のブラウザは事実上すべて対応しているので、
+    ウェブに載せる写真であれば今は WebP を既定にして構いません。
+    </p>
+    <p>
+    ただし<strong>すべての画像に良い形式というものはありません。</strong>画像の種類によって変わります。
+    </p>
+    <ul>
+    <li>
+      <strong>写真</strong> — WebP。色がなだらかに変化する画像なので、非可逆圧縮がよく効きます。
+      互換性が気になる場合は JPEG。
+    </li>
+    <li>
+      <strong>スクリーンショット・ロゴ・アイコン・図表・QR コード</strong> — PNG。
+      線と文字、広いべた塗りでできた画像は、可逆圧縮の PNG が最も小さくなります。
+      こうした画像を WebP や JPEG にすると<strong>容量がかえって増え</strong>、文字の輪郭も粗くなります。
+    </li>
+    <li>
+      <strong>背景が透明な画像</strong> — WebP か PNG。JPEG は透明度を保持できないため、
+      透明だった部分が白で埋まります。
+    </li>
+    </ul>
+    <p>
+    画質スライダーが効くのは WebP と JPEG だけです。PNG は可逆圧縮で品質という概念がないため、
+    スライダーは無効になります。既定値の 0.8 は、写真を見比べても違いが分かりにくい一方で
+    容量は大きく下がる位置です。
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>サイズの決め方は四通り</h2></summary>
+    <ul>
+    <li>
+      <strong>元のまま</strong> — 寸法はそのままで、形式と画質だけを変えます。
+    </li>
+    <li>
+      <strong>長辺</strong> — 横でも縦でも長い方を基準に合わせます。
+      縦位置と横位置が混ざった一群を<strong>同じように扱える唯一の方法</strong>なので、
+      スマートフォンの写真をまとめて縮めるときはたいていこれです。ウェブ用なら 1920 が無難です。
+    </li>
+    <li>
+      <strong>幅×高さ</strong> — 枠を決めます。片方だけ入力すればその辺だけを合わせ、
+      もう一方は比率で決まります（「幅だけ 1200」）。ここからさらに二つに分かれます。
+      <strong>枠に収める</strong>は何も切り取らないかわりに一辺だけが枠に接します —
+      800×600 の枠に縦位置の写真を入れると 571×600 になります。
+      <strong>ちょうどこの寸法</strong>は中央を切り取って例外なく 800×600 にします。
+      商品写真のように寸法が決まっている場合に使います。
+    </li>
+    <li>
+      <strong>パーセント</strong> — 元画像に対する比率で縮めます。元の大きさがまちまちなのに
+      「全部半分に」といった扱いをしたいときに便利です。
+    </li>
+    </ul>
+    <p>
+    既定では<strong>元画像より大きくはしません。</strong>800px の画像に 1920 を求めると
+    存在しない画素を作ることになり、ぼやけるうえに容量はかえって増えます。
+    寸法をきっちり揃えることの方が重要なら「元画像より大きくすることを許可」を有効にしてください。
+    </p>
+  </details>
+
+  <details>
+    <summary><h2>よくある質問</h2></summary>
+
+    <h3>本当に枚数制限はありませんか</h3>
+    <p>
+    ありません。一枚ずつ順に処理し、終わったものはすぐにメモリから解放するので、
+    同時に開いている画像は常に一枚だけです。100枚でも300枚でも、かかる時間が延びるだけで詰まりません。
+    100枚を超えると時間がかかる旨をお知らせしますが、止めることはしません。
+    </p>
+
+    <h3>縦位置で撮った写真が横向きになりませんか</h3>
+    <p>
+    なりません。スマートフォンの写真は画素そのものを回転させるかわりに「これだけ回して表示せよ」
+    という情報（EXIF Orientation）を付けています。ツールがこれを見落とすと縦位置の写真が横倒しになります。
+    このツールはその情報を先に読み、実際に回転させてから保存します。
+    </p>
+
+    <h3>iPhone の HEIC 写真も使えますか</h3>
+    <p>
+    ブラウザによります。Safari は HEIC を開けるのでそのまま処理されますが、
+    Chrome・Edge・Firefox は HEIC を読めないため、そのファイルだけ飛ばされます。
+    iPhone でお使いの場合は Safari で開いてください。なお HEIC で保存し直すこともできないため、
+    「元のまま」を選んでいても WebP で出力されます。
+    </p>
+
+    <h3>結果が元画像より大きくなりました</h3>
+    <p>
+    たいてい次の二つのどちらかです。すでに圧縮された JPEG・WebP を<strong>PNG に</strong>変えると
+    大きくなります — PNG は捨てられた情報を戻せない一方で、すべての画素をそのまま保存するからです。
+    逆に、スクリーンショットや QR のような<strong>線とべた塗りの画像を WebP・JPEG に</strong>変えても
+    大きくなります。結果欄に増えた理由も表示されるので、それに沿って設定を変えてみてください。
+    </p>
+
+    <h3>動く GIF も使えますか</h3>
+    <p>
+    最初のコマだけが変換されます。動きは失われ、静止画になります。
+    一覧にその旨が表示されるので、ダウンロードする前に確認できます。
+    </p>
+
+    <h3>元のファイルは変更されますか</h3>
+    <p>
+    変更されません。ブラウザはドラッグして置いたファイルを読むだけで、上書きはできません。
+    結果は常に新しいファイルとして保存されます。
+    </p>
+
+    <h3>設定を変えてやり直せますか</h3>
+    <p>
+    ファイルを入れ直す必要はありません。設定を変えて「変換」をもう一度押せば、
+    同じファイルに新しい設定が適用されます。
+    </p>
+  </details>
+
+</section>
+
+<footer>
+  <a href="/ja">prelaps ホーム</a> ·
+  <a href="/ja/privacy#imagesquish">プライバシーポリシー</a> ·
+  <a href="/ja/terms">利用規約</a> ·
+  <a href="/ja/contact">お問い合わせ</a>
+</footer>
+
+</div>
+
+<noscript>
+  <p style="color:var(--err)">このツールはブラウザ内で画像を直接処理するため、JavaScript が必要です。</p>
+</noscript>
+
+<script type="module" src="../src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+/* 도구는 prelaps.com/imagesquish/<언어>/ 아래에 있다. 절대 경로를 쓰면 도메인 루트 기준으로
+   풀려서 전부 깨진다 — 이 파일 안의 모든 참조도 상대 경로여야 한다.
+
+   색 이름과 값은 허브(prelaps-home/src/styles/global.css)에서 그대로 가져왔다.
+   허브가 흰 배경 + prefers-color-scheme 대응이라 도구도 같이 간다.
+   race 가 다크 고정인 것은 그쪽이 3D 무대를 담느라 튄 경우다 — 기준은 허브다. */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f6f6f4;
+  --fg: #1b1b1a;
+  --fg-muted: #6b6b66;
+  --border: #e4e4df;
+  --accent: #2f6f4f;
+
+  /* 허브에 없는 것만 여기서 더한다. 허브에 같은 쓰임이 생기면 그쪽으로 옮긴다. */
+  --accent-fg: #ffffff;      /* 강조 버튼 위의 글자 */
+  --accent-soft: #edf4ef;    /* 결과 요약 바탕 */
+  --err: #b4433b;
+  --warn: #8a6a1f;
+  --warn-soft: #fbf4e4;      /* 결과가 늘었을 때의 요약 바탕 */
+  --field: #ffffff;          /* 입력칸 바탕. 패널 위에서도 한 단계 밝아야 눌리는 칸으로 읽힌다 */
+
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16171a;
+    --bg-soft: #1e2024;
+    --fg: #e9e9e6;
+    --fg-muted: #9a9a94;
+    --border: #2c2f34;
+    --accent: #7fc0a0;
+
+    /* 다크의 accent 는 밝은 초록이라 그 위 글자는 반대로 어두워야 한다. */
+    --accent-fg: #12211a;
+    --accent-soft: #1b2620;
+    --err: #e08b8b;
+    --warn: #d9b06a;
+    --warn-soft: #2a2318;
+    --field: #14161a;
+  }
+}
+
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+
+/* **이 줄이 없으면 hidden 속성이 조용히 안 먹는다.**
+   `.row { display: flex }` 같은 작성자 스타일이 브라우저 기본 `[hidden] { display: none }`
+   을 이겨서, 숨겼다고 생각한 칸이 그대로 보인다. 실제로 「원본 유지」인데 크기 입력칸이
+   떠 있어서, 값을 넣어도 아무 일이 없는(모드가 keep 이니 당연한) 화면이 나왔다.
+   race 의 styles.css 에도 같은 사고 기록이 있다 — 거기서는 결과창이 무대를 덮었다. */
+[hidden] { display: none !important; }
+
+/* 화면을 꽉 채우고 푸터를 바닥에 붙인다. 파일을 넣기 전에는 본문이 짧아서
+   그냥 두면 푸터가 화면 한가운데로 올라와 붙는다 — 페이지가 거기서 끝난 것처럼 보인다. */
+body {
+  margin: 0; padding: 20px 20px 40px;
+  min-height: 100vh;
+  min-height: 100dvh;   /* 모바일 주소창이 접힐 때 100vh 는 화면보다 커진다 */
+  display: flex; flex-direction: column;
+  background: var(--bg); color: var(--fg);
+  font: 15px/1.65 system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
+        "Noto Sans KR", "Hiragino Sans", sans-serif;
+}
+/* 푸터의 margin-top:auto 가 먹으려면 그 부모도 세로 flex 여야 한다. */
+.wrap { max-width: 1060px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
+
+/* 제목 위 구석의 허브 링크. 도구가 prelaps 안에 있다는 걸 알리는 유일한 표시이고,
+   검색엔진에게도 이 페이지가 어디 속하는지 알려주는 내부 링크다. */
+.home {
+  display: inline-block;
+  color: var(--fg-muted); text-decoration: none;
+  font-size: 12px; letter-spacing: .06em; text-transform: lowercase;
+  margin-bottom: 2px;
+}
+.home:hover { color: var(--fg); }
+
+header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; margin-bottom: 14px;
+}
+h1 { font-size: 21px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.tagline { color: var(--fg-muted); font-size: 14px; margin: 0; }
+.langs { display: flex; gap: 12px; font-size: 13px; flex: none; padding-top: 3px; }
+.langs a { color: var(--fg-muted); text-decoration: none; }
+.langs a[aria-current="true"] { color: var(--fg); font-weight: 600; }
+.langs a:hover { color: var(--fg); }
+
+/* ── 배지 ────────────────────────────────────────── */
+.badges {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  list-style: none; margin: 0 0 16px; padding: 0;
+}
+.badges li {
+  font-size: 12px; letter-spacing: .01em;
+  color: var(--accent); background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  border-radius: 999px; padding: 3px 11px;
+}
+
+/* ── 공통 조각 ───────────────────────────────────── */
+button {
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 7px 14px; font: inherit; cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--fg-muted); }
+/* 고른 값. 테두리만 바꾸면 흰 배경에서 안 읽혀서 바탕까지 칠한다. */
+button.on {
+  background: var(--accent); border-color: var(--accent); color: var(--accent-fg);
+}
+button:disabled { opacity: .45; cursor: default; }
+button.sm { padding: 4px 10px; font-size: 13px; }
+button.primary {
+  background: var(--accent); border-color: var(--accent); color: var(--accent-fg);
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) { filter: brightness(1.1); }
+/* 드롭 영역 안의 "파일 선택". 버튼이지만 글자처럼 보여야 영역 전체가 클릭 대상인 인상을 안 깬다. */
+.linkish {
+  background: none; border: none; padding: 0;
+  color: var(--accent); text-decoration: underline; font: inherit;
+}
+.linkish:hover { background: none; filter: brightness(1.15); }
+.lb { color: var(--fg-muted); font-size: 12px; }
+.note { color: var(--fg-muted); font-size: 12px; margin: 8px 0 0; }
+.note.warn { color: var(--warn); }
+.bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+kbd {
+  font: inherit; font-size: 11px; background: var(--bg-soft); border: 1px solid var(--border);
+  border-bottom-width: 2px; border-radius: 4px; padding: 0 4px; color: var(--fg-muted);
+}
+
+/* ── 2단 레이아웃 ────────────────────────────────── */
+/* 왼쪽은 넣는 곳(드롭 + 파일 목록), 오른쪽은 바꾸는 값과 그 결과다.
+   목록이 100장까지 길어지므로 오른쪽 칸은 sticky 로 붙여 둔다 —
+   스크롤해 내려가도 「변환」과 「zip 받기」가 화면에 남아야 한다. */
+.layout { display: flex; gap: 16px; align-items: flex-start; }
+.main { flex: 1; min-width: 0; }
+.side { width: 300px; flex: none; position: sticky; top: 20px; }
+
+.panel {
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px;
+}
+.panel h2 {
+  font-size: 12px; color: var(--fg-muted); margin: 0 0 9px;
+  font-weight: 600; letter-spacing: .04em;
+}
+
+/* ── 파일 넣는 곳 ────────────────────────────────── */
+/* 오른쪽 패널과 같은 테두리·바탕·모서리다. 점선을 쓰지 않는 대신 드래그가 올라왔을 때
+   테두리와 바탕이 초록으로 바뀌는 것이 "여기 놓으면 된다" 를 알리는 몫을 한다.
+   파일이 없을 때는 화면의 주인공이라 크게, 들어온 뒤에는 .slim 으로 줄여 자리를 목록에 넘긴다. */
+/* 비어 있을 때는 오른쪽 설정 칸과 키를 맞춘다. 파일을 끌어다 놓는 게 이 화면의 첫 일인데
+   높이가 얕으면 조준할 곳처럼 보이지 않고, 옆 칸만 길어서 화면이 한쪽으로 기운다.
+   padding 이 아니라 min-height 로 잡는 이유는 .slim 으로 접힐 때 글자 위치가
+   따로 놀지 않게 하기 위해서다 — 세로 가운데 정렬은 어느 높이에서나 같은 규칙이다. */
+.drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 300px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg-soft); text-align: center;
+  padding: 32px 20px; margin-bottom: 10px; cursor: pointer;
+  transition: border-color .15s, background .15s, min-height .15s, padding .15s;
+}
+.drop:hover, .drop:focus-visible { border-color: var(--accent); outline: none; }
+/* 드래그가 위에 올라와 있는 동안. JS 가 dragover 에서 붙이고 dragleave·drop 에서 뗀다. */
+.drop.over {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+/* 파일이 들어오면 자리를 목록에 넘긴다. 여기서 min-height 를 안 풀면 계속 300px 을 차지한다. */
+.drop.slim { min-height: 0; padding: 16px 20px; }
+.drop.slim .drop-main { font-size: 14px; color: var(--fg-muted); }
+.drop-main { font-size: 16px; margin: 0 0 6px; }
+.drop-sub { color: var(--fg-muted); font-size: 13px; margin: 0; }
+
+/* ── 설정 ────────────────────────────────────────── */
+.set { margin-bottom: 16px; }
+.set:last-child { margin-bottom: 0; }
+.seg { display: flex; gap: 5px; flex-wrap: wrap; }
+.row { display: flex; gap: 6px; align-items: center; margin-top: 8px; }
+.num {
+  width: 84px; text-align: center; font-variant-numeric: tabular-nums;
+  background: var(--field); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 5px; padding: 4px 7px; font: inherit; font-size: 13px;
+}
+.num:focus { outline: none; border-color: var(--accent); }
+.range { width: 100%; accent-color: var(--accent); }
+.range:disabled { opacity: .45; }
+
+/* ── 실행 줄 ─────────────────────────────────────── */
+/* 진행바와 중단 버튼이 변환 버튼 바로 아래 붙는다. 오래 걸려도 통제권이 보이면
+   사람이 안 나간다 — 장수 무제한 정책을 지탱하는 부분이다 (기획서 §6). */
+.runbar { display: flex; gap: 8px; align-items: center; }
+.runbar .primary { flex: 1; }
+.progress {
+  height: 6px; margin-top: 10px;
+  background: var(--border); border-radius: 999px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0; background: var(--accent); border-radius: 999px;
+  transition: width .2s ease;
+}
+.status {
+  display: block; margin-top: 7px;
+  color: var(--fg-muted); font-size: 12.5px; font-variant-numeric: tabular-nums;
+}
+
+/* ── 결과 요약 ───────────────────────────────────── */
+/* 전후 비교가 이 도구의 만족감을 만드는 자리다 (기획서 §7).
+   오른쪽 칸에서 유일하게 색이 들어간 패널이라 끝나면 눈이 여기로 온다. */
+.summary { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+.sum-nums {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  font-variant-numeric: tabular-nums; margin-bottom: 12px;
+}
+.sum-before { color: var(--fg-muted); font-size: 15px; text-decoration: line-through; }
+.sum-arrow { color: var(--fg-muted); }
+.sum-after { color: var(--fg); font-size: 24px; font-weight: 700; }
+.sum-cut { color: var(--accent); font-size: 14px; font-weight: 600; width: 100%; }
+/* 커진 것을 줄어든 것과 같은 초록으로 두면 나쁜 소식이 좋은 소식처럼 읽힌다.
+   이 도구가 파는 게 "용량이 줄었다" 는 신뢰라서, 늘어난 건 늘어난 색으로 보여야 한다. */
+.sum-cut.up { color: var(--warn); }
+
+/* 총합이 늘면 패널 전체가 뒤집힌다. 숫자만 주황으로 바꾸는 것으로는 모자란다 —
+   초록 패널은 그 자체로 "잘 됐다" 고 말하고 있어서, 안의 숫자와 어긋난 말을 하게 된다. */
+.summary.up {
+  background: var(--warn-soft);
+  border-color: color-mix(in srgb, var(--warn) 40%, transparent);
+}
+/* 왜 늘었는지와 무엇을 하면 되는지. 이 줄이 없으면 경고가 "그래서 어쩌라고" 가 된다. */
+.sum-warn {
+  margin: 0 0 12px; font-size: 12.5px; line-height: 1.5;
+  color: var(--warn);
+}
+.sum-act { display: flex; align-items: center; gap: 10px; }
+.sum-act .primary { flex: 1; }
+
+/* ── 파일 목록 ───────────────────────────────────── */
+.files { list-style: none; margin: 0; padding: 0; }
+.file {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg-soft); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;
+}
+/* 썸네일은 품질 확인용으로 한 장이면 충분하지만(기획서 §7), 자리는 전부 잡아 둬야
+   목록이 들쭉날쭉해지지 않는다. 비어 있을 때도 같은 크기의 회색 칸이다. */
+.thumb {
+  width: 44px; height: 44px; flex: none; border-radius: 5px;
+  background: var(--border) center / cover no-repeat;
+}
+.fmeta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.fname { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fdim { color: var(--fg-muted); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.fdim.err { color: var(--err); }
+.fsize {
+  display: flex; align-items: baseline; gap: 6px; flex: none;
+  font-size: 12.5px; font-variant-numeric: tabular-nums;
+}
+.fsize .before { color: var(--fg-muted); }
+.fsize .arrow { color: var(--fg-muted); }
+.fsize .after { color: var(--fg); font-weight: 600; }
+.fsize .cut { color: var(--accent); font-weight: 600; }
+.fsize .cut.up { color: var(--warn); }
+.file.busy .thumb { opacity: .5; }
+.file.failed { border-color: color-mix(in srgb, var(--err) 40%, var(--border)); }
+.file.failed .thumb { opacity: .35; }
+.dl { flex: none; }
+
+/* ── 설명 ────────────────────────────────────────── */
+.about { margin-top: 34px; max-width: 720px; }
+.about h2 { font-size: 16px; margin: 22px 0 6px; }
+.about p { color: var(--fg); margin: 0 0 10px; }
+.about ul { color: var(--fg); margin: 0 0 10px; padding-left: 20px; }
+
+/* auto 라서 위쪽 남는 자리를 전부 밀어낸다 — 본문이 짧으면 바닥, 길면 내용 바로 뒤. */
+footer { margin-top: auto; padding-top: 32px; color: var(--fg-muted); font-size: 13px; }
+footer a { color: var(--fg-muted); }
+
+/* 좁아지면 2단이 풀린다. 오른쪽 칸이 위로 올라가면 파일을 넣기도 전에 설정부터
+   보이게 되므로, 순서를 뒤집어 드롭 영역이 먼저 오게 한다. */
+@media (max-width: 780px) {
+  .layout { flex-direction: column; }
+  .side { width: 100%; position: static; }
+  .file { flex-wrap: wrap; }
+  .fmeta { flex-basis: calc(100% - 56px); }
+  .fsize { margin-left: 56px; }
+  .dl { margin-left: auto; }
+}
+
+/* 가로×세로는 칸이 둘이라 좁혀야 300px 칸 안에서 "1200 × 900 px" 가 한 줄에 선다. */
+.num.wh { width: 66px; }
+.num::placeholder { color: var(--fg-muted); opacity: .7; }
+
+/* 체크박스 한 줄. 글자를 눌러도 켜지도록 label 로 감싼다. */
+.check {
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 10px; font-size: 12.5px; color: var(--fg-muted); cursor: pointer;
+}
+.check input { accent-color: var(--accent); margin: 0; }
+
+/* FAQ 질문. h2 보다 작고 본문보다 굵어야 목록처럼 훑을 수 있다. */
+.about h3 { font-size: 14px; margin: 16px 0 4px; }
+.about a { color: var(--accent); }
+
+/* 설명을 접어 둔다. 도구 아래에 글이 길게 깔리면 화면이 덕지덕지해진다.
+   **<details> 를 쓰는 것이 중요하다** — 글이 처음부터 HTML 안에 있어서 접혀 있어도
+   그대로 색인된다. 자바스크립트로 나중에 끼워 넣으면 크롤러가 못 보고, 그러면
+   도구 페이지가 「UI 라벨 서른 단어」짜리 얇은 페이지가 된다 (헌법 §5 · 애드센스).
+   덤으로 JS 가 한 줄도 필요 없고 키보드·스크린리더도 브라우저가 알아서 처리한다. */
+.about details { border-top: 1px solid var(--border); }
+.about details:last-of-type { border-bottom: 1px solid var(--border); }
+.about summary {
+  cursor: pointer; padding: 13px 0;
+  display: flex; align-items: center; gap: 10px;
+  list-style: none;                          /* 기본 삼각형을 지운다 */
+}
+.about summary::-webkit-details-marker { display: none; }   /* 사파리용 */
+.about summary:hover h2 { color: var(--accent); }
+/* h2 를 summary 안에 넣어 제목 구조를 지킨다 — 접혀 있어도 목차 신호는 남는다. */
+.about summary h2 { margin: 0; font-size: 15px; font-weight: 600; }
+/* 열림 표시는 글자로 그린다. 아이콘 파일을 하나 더 두지 않으려는 것이다. */
+.about summary::after {
+  content: '+'; margin-left: auto;
+  color: var(--fg-muted); font-size: 17px; line-height: 1;
+}
+.about details[open] summary::after { content: '−'; }
+/* 펼친 내용은 제목 줄과 붙지 않게 살짝 띄우고, 아래로도 숨 쉴 자리를 준다. */
+.about details > :not(summary) { margin-bottom: 10px; }
+.about details > :last-child { margin-bottom: 18px; }
+.about details h3:first-of-type { margin-top: 0; }

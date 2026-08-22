@@ -1,0 +1,11 @@
+{
+  "name": "imagesquish",
+  "private": true,
+  "description": "이미지 일괄 리사이즈 + 포맷 변환 — prelaps.com/imagesquish/. 빌드 단계 없음. site/ 안이 그대로 사이트다.",
+  "scripts": {
+    "check:links": "node test/links.js",
+    "deploy": "npm run check:links && npx wrangler deploy",
+    "serve": "npx --yes serve site",
+    "og": "\"${CHROME:-/c/Program Files/Google/Chrome/Application/chrome.exe}\" --headless --disable-gpu --screenshot=site/og.png --window-size=1200,630 --hide-scrollbars test/og.html"
+  }
+}
