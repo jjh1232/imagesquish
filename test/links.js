@@ -28,6 +28,20 @@ const bad = (file, msg) => { fails++; console.log('  ✗ ' + file + ' — ' + ms
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 const exists = (rel) => fs.existsSync(path.join(ROOT, rel));
 
+/**
+ * 주소를 site/ 안의 파일로 되돌린다.
+ *
+ * 자산 층이 html_handling: "auto-trailing-slash" 라 **확장자 없는 주소를 서빙한다** —
+ * /imagesquish/ko/image-sizes 를 내는 파일은 site/ko/image-sizes.html 이다.
+ * canonical·사이트맵이 전부 확장자 없는 형태(그쪽이 정식 주소이고, .html 로 적으면
+ * 자산 층이 301 을 내보낸다)라, 파일을 보는 이 검사기는 .html 도 붙여봐야 한다.
+ */
+const existsAsPage = (p) => {
+  if (p === '' || p.endsWith('/')) return exists(p + 'index.html');
+  return exists(p) || exists(p + '.html');
+};
+
+
 // ── 언어 목록이 네 군데에서 같은지 ────────────────────────────
 // 이 검사가 이 파일에서 제일 중요하다. 나머지는 눈으로도 언젠가 걸리지만
 // 이건 다른 언어 사용자에게만 터져서 영영 모른다.
@@ -108,8 +122,7 @@ for (const lang of LANGS) {
   // 8. 상대 경로 링크·스크립트가 실제로 있는 파일인지
   for (const m of src.matchAll(/(?:href|src)="(\.\.?\/[^"#?]*)"/g)) {
     const p = path.posix.normalize(path.posix.join(lang, m[1]));
-    const file = p.endsWith('/') ? p + 'index.html' : p;
-    if (!exists(file)) bad(rel, `깨진 링크 ${m[1]}`);
+    if (!existsAsPage(p)) bad(rel, `깨진 링크 ${m[1]}`);
   }
 
   // 9. 언어 전환 UI 는 세 언어를 모두 갖고, 자기 자신을 현재로 표시해야 한다.
@@ -169,8 +182,7 @@ for (const lang of LANGS) {
     if (locs.includes(`${ORIGIN}/`)) bad(rel, '루트가 사이트맵에 있다 — 통로는 빼야 한다');
     for (const loc of locs) {
       const p = loc.replace(ORIGIN + '/', '');
-      const file = p.endsWith('/') || p === '' ? p + 'index.html' : p;
-      if (!exists(file)) bad(rel, `없는 페이지를 가리킨다 ${loc}`);
+      if (!existsAsPage(p)) bad(rel, `없는 페이지를 가리킨다 ${loc}`);
     }
   }
 }

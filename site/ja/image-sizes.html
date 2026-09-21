@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>ブログ・サムネイル・OG画像 — 何ピクセルに縮小すべきか | prelaps</title>
+<meta name="description" content="写真をウェブに載せる前に長辺を何ピクセルに縮小すべきか、用途別の基準とその根拠。基準は「表示される幅の二倍」です。">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/ja/image-sizes">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/image-sizes">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/image-sizes">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/image-sizes">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/image-sizes">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/ja/image-sizes">
+<meta property="og:title" content="何ピクセルに縮小すべきか — 用途別の画像サイズ基準">
+<meta property="og:description" content="写真をウェブに載せる前に長辺を何ピクセルに縮小すべきか、用途別の基準とその根拠。基準は「表示される幅の二倍」です。">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "ブログ・サムネイル・OG画像 — 何ピクセルに縮小すべきか",
+  "description": "写真をウェブに載せる前に長辺を何ピクセルに縮小すべきか、用途別の基準とその根拠。基準は「表示される幅の二倍」です。",
+  "inLanguage": "ja",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/ja/image-sizes",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/ja">prelaps</a> · <a href="./">画像一括リサイズ</a></p>
+    <h1>ブログ・サムネイル・OG画像 — 何ピクセルに縮小すべきか</h1>
+    <p class="tagline">表示される幅の二倍。基準はこの一行だけで、あとは用途ごとにその数字がいくつになるかです。</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/image-sizes" hreflang="ko">한국어</a>
+    <a href="../en/image-sizes" hreflang="en">English</a>
+    <a href="../ja/image-sizes" aria-current="true" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>写真はウェブに載せる前に縮小すべきだ、というのは誰もが知っています。問題は<b>どこまで</b>縮小するかです。これには答えが一つしかありません — <b>その画像が画面で実際に表示される幅の二倍。</b>以下は、その数字が用途ごとにいくつになるのか、そしてなぜ二倍なのかという話です。</p>
+
+<h2>元のまま載せると何が起きるか</h2>
+<p>今どきのスマートフォンの写真は長辺が4000ピクセルを超え、一枚3〜8MBあります。ところがブログ本文でその写真が実際に占める幅は800ピクセルほどです。残りの3200ピクセルは画面に描かれません。</p>
+<p>ブラウザが勝手に縮小して表示するので、<b>画面上は何の問題もありません。</b>だからほとんどの人がそのままにします。代償は別のところに出ます — 訪問者は3200ピクセル分のデータを受け取り終えてから写真を見ることになり、モバイル通信で来た人はその分を実際に消費します。写真が十枚入った記事なら、40MBを受け取らせている計算です。</p>
+<p>検索順位に使われる指標の中に、画面で最も大きい要素がいつ描き終わるかを測る値があります。本文の一番上の写真がたいていその要素なので、写真一枚が遅いとその値がまるごと遅くなります。</p>
+
+<h2>基準は「表示幅 × 2」</h2>
+<p>画面の1ピクセルと画像の1ピクセルは同じではありません。最近のスマートフォンやノートパソコンは、画面1ピクセル分の場所に実際の点を二つ打ちます。そのため800ピクセル幅で表示される場所に800ピクセルの画像を入れると、その画面ではぼやけて見えます。二倍の1600ピクセルを入れれば鮮明です。</p>
+<p><b>二倍までで十分です。</b>三倍にしても目では見分けがつかず、容量だけが2.25倍になります。点を三つ打つ画面も存在しますが、その画面で二倍と三倍を並べて見分けられる人はほとんどいません。</p>
+
+<h2>用途別の数字</h2>
+<p>ここでいう「長辺」は、横長の写真なら横、縦長の写真なら縦のことです。</p>
+<table>
+<tr><th>用途</th><th>画面での表示幅</th><th>保存する長辺</th></tr>
+<tr><td>ブログ本文の写真</td><td>700〜800px</td><td>1600px</td></tr>
+<tr><td>一覧のサムネイル</td><td>200〜300px</td><td>600px</td></tr>
+<tr><td>プロフィール画像</td><td>100px前後</td><td>300px</td></tr>
+<tr><td>画面全幅の背景</td><td>1200〜1600px</td><td>2400px</td></tr>
+<tr><td>OG画像(共有プレビュー)</td><td>—</td><td>1200 × 630 固定</td></tr>
+</table>
+<p><b>OG画像だけは性格が違います。</b>これは表示される大きさから決まる値ではなく、規格です。リンクを Slack や X、チャットアプリに貼ったときに出るあのプレビュー画像で、縦横比がずれるとサービスごとに勝手な切り取られ方をします。1200 × 630 にきっちり合わせ、大事な文字は端から十分に離してください。</p>
+
+<h2>縦長の写真と正方形</h2>
+<p>サイズを「横1600 × 縦1200」のように両方固定すると、縦長の写真が入ってきたときに歪むか切れます。<b>「長辺1600」で指定すれば、横長は1600×1200に、縦長は1200×1600になり、比率を保ったまま両方とも適切な大きさになります。</b></p>
+<p>プロフィール画像のように正方形にする必要がある場合は、縮小する前に切り抜くのが先です。縮小の段階で正方形を強制すると、どこを残すかをツールが勝手に決めることになります。</p>
+
+<h2>自分のサイトの実際の表示幅を測る</h2>
+<p>推測しなくても測れます。ブラウザでその写真を右クリックして「検証」を選ぶと開発者ツールが開きます。要素の一覧でその画像の行にマウスを乗せると、二つの数字が並んで表示されます。</p>
+<ul>
+<li><b>表示サイズ</b>(rendered) — 画面で実際に占めている幅</li>
+<li><b>元のサイズ</b>(intrinsic) — ファイルの中に入っている幅</li>
+</ul>
+<p>元のサイズが表示サイズの二倍を超えている分は、捨てられているデータです。四倍、五倍になっている例はよくあります。</p>
+
+<h2>このツールでのやり方</h2>
+<p><a href="./">画像一括リサイズ</a>を開いて写真をまとめてドラッグしてください。サイズの欄で<b>長辺</b>を選び、上の表の数字を入れます。<b>元より大きくしないのが既定値</b>なので、すでに小さい写真が混ざっていても無理に引き伸ばされることはありません。</p>
+<p>形式は写真ならWebP、品質は0.8前後が無難です。スクリーンショットやロゴのように線と文字でできた画像はPNGが適しています — こうした画像をWebPやJPEGに変換すると、容量がかえって増え、文字の輪郭が汚くなります。</p>
+<p>結果はzip一つで受け取れます。ファイルはブラウザの外に出ないので、枚数にも容量にも上限はありません。</p>
+
+<h2>縮小してはいけないもの</h2>
+<p>一度縮小した写真は元に戻せません。次のものは原本のまま残してください。</p>
+<ul>
+<li><b>保管用の原本</b> — あとで使い直すかもしれない写真。ウェブ用の複製だけを縮小してください。</li>
+<li><b>印刷する写真</b> — 印刷は画面とは基準が違い、はるかに多くのピクセルが必要です。</li>
+<li><b>あとで切り抜いて使う写真</b> — 一部を拡大して使うつもりなら、その部分はすでに小さくなっています。</li>
+</ul>
+<p>このツールは原本に触れず新しいファイルを作りますが、別の場所ですでに原本を上書きしてしまった場合は元に戻せません。大事な写真は原本のフォルダを分けて作業してください。</p>
+  <p class="back"><a href="./">画像一括リサイズを開く</a></p>
+</section>
+
+<footer>
+  <a href="/ja">prelaps ホーム</a> ·
+  <a href="./">画像一括リサイズ</a> ·
+  <a href="/ja/privacy#imagesquish">プライバシーポリシー</a> ·
+  <a href="/ja/terms">利用規約</a> ·
+  <a href="/ja/contact">お問い合わせ</a>
+</footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Blog, thumbnail, OG image — what size should you resize to? | prelaps</title>
+<meta name="description" content="How many pixels to resize photos to before putting them on the web, per use, and where those numbers come from. The rule is twice the displayed width.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/en/image-sizes">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/image-sizes">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/image-sizes">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/image-sizes">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/image-sizes">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/en/image-sizes">
+<meta property="og:title" content="What size should you resize to — image dimensions by use">
+<meta property="og:description" content="How many pixels to resize photos to before putting them on the web, per use, and where those numbers come from. The rule is twice the displayed width.">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Blog, thumbnail, OG image — what size should you resize to?",
+  "description": "How many pixels to resize photos to before putting them on the web, per use, and where those numbers come from. The rule is twice the displayed width.",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/en/image-sizes",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/en">prelaps</a> · <a href="./">Bulk Image Resizer</a></p>
+    <h1>Blog, thumbnail, OG image — what size should you resize to?</h1>
+    <p class="tagline">Twice the width it is displayed at. That is the whole rule; the rest is what that number works out to for each use.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/image-sizes" hreflang="ko">한국어</a>
+    <a href="../en/image-sizes" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/image-sizes" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>Everyone knows photos should be shrunk before going on the web. The question is <b>by how much</b>. There is only one answer to that: <b>twice the width the image is actually displayed at.</b> What follows is what that number comes out to for each use, and why it is twice.</p>
+
+<h2>What happens if you upload the original</h2>
+<p>A phone photo today is over 4000 pixels on the long edge and 3 to 8MB per file. In a blog post, that photo occupies maybe 800 pixels of width. The other 3200 pixels are never drawn.</p>
+<p>The browser scales it down for you, so <b>nothing looks wrong on screen.</b> That is why most people leave it. The cost shows up elsewhere: the visitor downloads all 3200 pixels' worth before the photo appears, and anyone on mobile data pays for it. Ten photos in a post means asking for 40MB.</p>
+<p>One of the metrics that feeds search ranking measures when the largest element on screen finishes drawing. The photo at the top of a post is usually that element, so one slow photo drags the whole number with it.</p>
+
+<h2>The rule is displayed width times two</h2>
+<p>One screen pixel and one image pixel are not the same thing. Modern phones and laptops pack two physical dots into the space of one layout pixel. Put an 800-pixel image into a slot that is 800 pixels wide and it looks soft on those screens. Put in 1600 and it looks sharp.</p>
+<p><b>Two is enough.</b> Going to three changes nothing you can see and multiplies the file size by 2.25. Screens that pack three dots do exist, but almost nobody can pick the 3x file out of a lineup next to the 2x one.</p>
+
+<h2>Numbers by use</h2>
+<p>"Long edge" means the width for landscape photos and the height for portrait ones.</p>
+<table>
+<tr><th>Use</th><th>Displayed width</th><th>Long edge to save</th></tr>
+<tr><td>Photo in a blog post</td><td>700–800px</td><td>1600px</td></tr>
+<tr><td>Thumbnail in a list</td><td>200–300px</td><td>600px</td></tr>
+<tr><td>Profile picture / avatar</td><td>around 100px</td><td>300px</td></tr>
+<tr><td>Full-width background</td><td>1200–1600px</td><td>2400px</td></tr>
+<tr><td>OG image (link preview)</td><td>—</td><td>fixed 1200 × 630</td></tr>
+</table>
+<p><b>The OG image is the odd one out.</b> It is not derived from a displayed size; it is a spec. This is the preview picture that appears when someone pastes your link into Slack, X, or a chat app, and if the aspect ratio is off, each service crops it its own way. Match 1200 × 630 exactly and keep any important text well away from the edges.</p>
+
+<h2>Portrait photos and squares</h2>
+<p>If you pin both dimensions, say 1600 by 1200, a portrait photo either stretches or gets cropped. <b>Set the long edge to 1600 instead and a landscape photo becomes 1600×1200 while a portrait one becomes 1200×1600</b> — both at a sensible size, both with the original proportions intact.</p>
+<p>When you genuinely need a square, such as a profile picture, crop first and resize second. Forcing a square during the resize hands the decision about what to keep to the tool.</p>
+
+<h2>How to measure the real displayed width</h2>
+<p>You do not have to guess. Right-click the image in your browser and choose Inspect to open developer tools. Hovering the image in the element list shows two numbers side by side.</p>
+<ul>
+<li><b>Rendered size</b> — the width it actually occupies on screen</li>
+<li><b>Intrinsic size</b> — the width stored inside the file</li>
+</ul>
+<p>Anything by which the intrinsic size exceeds twice the rendered size is data being thrown away. Four and five times over is common.</p>
+
+<h2>Doing it with this tool</h2>
+<p>Open the <a href="./">Bulk Image Resizer</a> and drop all the photos in at once. Choose <b>long edge</b> under size and type in the number from the table above. <b>Not enlarging past the original is the default</b>, so smaller images mixed into the batch are left alone rather than stretched.</p>
+<p>For format, WebP suits photographs, and quality around 0.8 is a safe setting. Screenshots, logos and anything made of lines and text belong in PNG — converting those to WebP or JPEG usually makes the file <i>bigger</i> and leaves fuzzy edges around the letters.</p>
+<p>Take the results as a single zip. Files never leave the browser, so there is no cap on how many or how large.</p>
+
+<h2>What not to shrink</h2>
+<p>A resized photo cannot be un-resized. Leave these as they are.</p>
+<ul>
+<li><b>Archive originals</b> — anything you might use again. Shrink a copy for the web instead.</li>
+<li><b>Photos for print</b> — print works to a different standard and needs far more pixels.</li>
+<li><b>Photos you will crop later</b> — if you plan to blow up part of the frame, that part is already small.</li>
+</ul>
+<p>This tool writes new files and never touches your originals, but if you have already overwritten an original elsewhere, that is not recoverable. Keep important photos in a separate folder and work on copies.</p>
+  <p class="back"><a href="./">Open the Bulk Image Resizer</a></p>
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="./">Bulk Image Resizer</a> ·
+  <a href="/en/privacy#imagesquish">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+</body>
+</html>

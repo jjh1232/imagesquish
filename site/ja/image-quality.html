@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>品質の値はいくつが適当か — 0.8 が既定である理由 | prelaps</title>
+<meta name="description" content="画像の品質スライダーが実際に何をしているのか、なぜ0.8前後で止めるのが妥当なのか、画像の種類によってどこが変わるのか。">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/ja/image-quality">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/image-quality">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/image-quality">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/image-quality">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/image-quality">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/ja/image-quality">
+<meta property="og:title" content="品質の値はいくつが適当か">
+<meta property="og:description" content="画像の品質スライダーが実際に何をしているのか、なぜ0.8前後で止めるのが妥当なのか、画像の種類によってどこが変わるのか。">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "品質の値はいくつが適当か — 0.8 が既定である理由",
+  "description": "画像の品質スライダーが実際に何をしているのか、なぜ0.8前後で止めるのが妥当なのか、画像の種類によってどこが変わるのか。",
+  "inLanguage": "ja",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/ja/image-quality",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/ja">prelaps</a> · <a href="./">画像一括リサイズ</a></p>
+    <h1>品質の値はいくつが適当か — 0.8 が既定である理由</h1>
+    <p class="tagline">0.8前後でたいてい片がつきます。それ以上は目に見えず、容量だけが増えます。</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/image-quality" hreflang="ko">한국어</a>
+    <a href="../en/image-quality" hreflang="en">English</a>
+    <a href="../ja/image-quality" aria-current="true" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>写真を縮小するとき、サイズの次に出会う値が品質です。0から1までの数字ひとつですが、それが何を決めているのかの説明が付いていることは稀です。結論から書くと、<b>0.8前後に置いて先へ進んでかまいません。</b>以下はその理由と、その既定値から外れるべき場合です。</p>
+
+<h2>品質の値が実際にしていること</h2>
+<p>JPEGとWebPは<b>非可逆圧縮</b>です。元のまま保存せず、一部を捨ててファイルを小さくします。しかも何でも捨てるのではなく、<b>人の目が気づきにくいものから</b>捨てます。</p>
+<p>人の目は明るさの変化には敏感で、色の変化には鈍いです。また広い面のゆるやかな変化はよく見えますが、狭い面の急な変化は見落とします。圧縮はその性質をそのまま利用します — 色の情報を先に減らし、細かい部分からならしていきます。</p>
+<p>つまり品質の値は「どれだけ鮮明か」ではなく<b>「どれだけ捨てるか」</b>です。下げるほど多く捨て、捨てたものが見え始める位置は画像ごと、人ごとに少しずつ違います。</p>
+
+<h2>0.8 が既定である理由</h2>
+<p>捨てる量と見え方は比例しません。おおよそこう進みます。</p>
+<table>
+<tr><th>品質</th><th>容量</th><th>見た目</th></tr>
+<tr><td>0.95</td><td>非常に大きい</td><td>0.85 と区別がつかない</td></tr>
+<tr><td>0.85</td><td>大きい</td><td>事実上そのまま</td></tr>
+<tr><td>0.80</td><td>ほどほど</td><td>拡大してようやく差が分かる</td></tr>
+<tr><td>0.70</td><td>小さい</td><td>空や肌にムラが出始める</td></tr>
+<tr><td>0.50</td><td>非常に小さい</td><td>格子状の模様がはっきり出る</td></tr>
+</table>
+<p>0.8から0.95に上げると容量はほぼ倍になりますが、画面で見分けられる人はほとんどいません。逆に0.7を下回ると急に汚くなります。<b>効きが鈍る折れ目が0.8付近</b>にあるので、そこが既定値です。</p>
+
+<h2>画像によって変わるところ</h2>
+<ul>
+<li><b>ふつうの写真</b> — 0.75〜0.85。風景・料理・物撮りはこの範囲でほとんど差がありません。</li>
+<li><b>人物写真</b> — 0.85寄りに。肌は広くゆるやかな階調なので、圧縮のムラが最初に出る場所です。</li>
+<li><b>空や単色の背景が広い写真</b> — 同じ理由で0.85寄りに。帯状のムラ(バンディング)が出やすい場所です。</li>
+<li><b>ノイズの多い写真</b> — 品質を上げても容量が増えるだけで良くなりません。圧縮から見るとノイズは「捨てられない細部」なのでコストが高いのです。0.75まで下げてかまいません。</li>
+<li><b>スクリーンショット・ロゴ・図・文字</b> — <b>品質をいじる代わりにPNGにしてください。</b>線と単色でできた画像に非可逆圧縮をかけると文字の輪郭が汚くなり、容量もかえって増えます。</li>
+</ul>
+
+<h2>PNG に品質はありません</h2>
+<p>PNGは<b>可逆</b>なので何も捨てません。そのためスライダーを動かしても結果は変わりません。このツールはPNGを選ぶとその事実を画面に出します — 効かない値をいじり続けるのを防ぐためです。</p>
+<p>PNGを小さくしたいなら、品質ではなく<b>サイズを縮めるか色数を減らす</b>必要があります。写真をPNGで保存すると容量が何倍にもなるので、写真は最初からWebPかJPEGに置くほうが賢明です。</p>
+
+<h2>二度圧縮しないこと</h2>
+<p>すでにJPEGのファイルをまたJPEGで保存すると、<b>捨てたものの上からさらに捨てます。</b>これを世代劣化と呼びます。品質を1.0に上げても、すでに失われた情報は戻らず、ファイルが大きくなるだけです。</p>
+<p>メッセージアプリで受け取った写真は、すでに一度圧縮されています。それをまた縮めれば二度目です。できるだけ<b>原本から一度で</b>処理してください。原本がない場合は仕方ありませんが、そのときは品質をやや高め(0.85)にしておくほうが安全です。</p>
+
+<h2>どこを見て確かめるか</h2>
+<p><a href="./">画像一括リサイズ</a>は変換が終わると前後の容量と削減率を並べて表示します。数字より大事なのは目で見ることで、見る場所は決まっています。</p>
+<ul>
+<li><b>広い空や単色の壁</b> — 帯状のムラが出ていないか</li>
+<li><b>肌</b> — なめらかだった面にざらつきが出ていないか</li>
+<li><b>文字や線の輪郭</b> — にじみや影が出ていないか</li>
+</ul>
+<p>この三か所が無事なら残りも無事です。設定を変えて試すのにファイルを入れ直す必要はありません — 値を変えて変換を押し直せば、同じファイルに新しい設定が適用されます。</p>
+
+<h2>サイズと品質のどちらが先か</h2>
+<p><b>サイズのほうがはるかに効きます。</b>4000ピクセルを品質0.95で保存するより、1600ピクセルに縮めて0.8で保存するほうが、ファイルははるかに小さく画面では良く見えます。どのみち画面には1600ピクセルしか描かれないからです。</p>
+<p>順序をつけるなら<b>先にサイズを合わせ、それから品質に触ります。</b>サイズを正しく取れば、品質は既定値から動かす必要がほとんどありません。どのサイズにすべきかは<a href="image-sizes">用途別の画像サイズ基準</a>にまとめています。</p>
+  <p class="back"><a href="./">画像一括リサイズを開く</a></p>
+</section>
+
+<footer>
+  <a href="/ja">prelaps ホーム</a> ·
+  <a href="./">画像一括リサイズ</a> ·
+  <a href="/ja/privacy#imagesquish">プライバシーポリシー</a> ·
+  <a href="/ja/terms">利用規約</a> ·
+  <a href="/ja/contact">お問い合わせ</a>
+</footer>
+
+</div>
+
+</body>
+</html>

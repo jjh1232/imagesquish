@@ -98,9 +98,19 @@ function fmtBytes(n) {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 }
 
-/** GA 는 Worker 가 주입한다. 로컬(file://·npm run serve)에는 없으므로 있을 때만 부른다. */
+/**
+ * GA 는 Worker 가 주입한다. 로컬(file://·npm run serve)에는 없으므로 있을 때만 부른다.
+ *
+ * `tool` 을 항상 붙인다 — mojibake·race 도 같은 값을 붙이고 있어서, 이것 하나로
+ * 도구별 「방문 대비 실제 사용률」을 한 보고서에서 비교할 수 있다.
+ *
+ * ⚠ 이미지나 파일 이름은 절대 보내지 않는다. 이 도구의 약속이 "기기 밖으로 안 나간다" 라
+ *   계측이 그걸 깨면 도구 전체가 거짓말이 된다. 개수·용량 합계·설정값만 보낸다.
+ */
 function track(name, params) {
-  if (typeof window.gtag === 'function') window.gtag('event', name, params);
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', name, { tool: 'imagesquish', ...params });
+  }
 }
 
 const EXT = { 'image/webp': 'webp', 'image/jpeg': 'jpg', 'image/png': 'png' };
@@ -487,6 +497,10 @@ async function run() {
 
   const settings = readSettings();
   lastSettings = settings;
+  // 두 벌을 보낸다. `tool_use` 는 도구 셋이 공유하는 이름이라 「방문 대비 사용률」을
+  // 한 보고서에서 비교하는 용도이고, `convert_start` 는 이 도구 안에서만 쓰는 세부다.
+  // 이름을 하나로 합치면 둘 중 하나를 잃는다.
+  track('tool_use', { format: settings.type, size_mode: settings.mode, count: items.length });
   track('convert_start', { count: items.length, format: settings.type, size_mode: settings.mode });
 
   // 다시 돌릴 수 있어야 한다 — 설정만 바꿔 재적용하는 게 흔한 사용법이다 (기획서 §7).

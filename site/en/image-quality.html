@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>What quality setting should you use — why 0.8 is the default | prelaps</title>
+<meta name="description" content="What the image quality slider actually does, why stopping around 0.8 is the sensible choice, and where different kinds of images diverge.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/en/image-quality">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/image-quality">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/image-quality">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/image-quality">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/image-quality">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/en/image-quality">
+<meta property="og:title" content="What quality setting should you use">
+<meta property="og:description" content="What the image quality slider actually does, why stopping around 0.8 is the sensible choice, and where different kinds of images diverge.">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What quality setting should you use — why 0.8 is the default",
+  "description": "What the image quality slider actually does, why stopping around 0.8 is the sensible choice, and where different kinds of images diverge.",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/en/image-quality",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/en">prelaps</a> · <a href="./">Bulk Image Resizer</a></p>
+    <h1>What quality setting should you use — why 0.8 is the default</h1>
+    <p class="tagline">Around 0.8 settles it for most images. Going higher adds file size without anything you can see.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/image-quality" hreflang="ko">한국어</a>
+    <a href="../en/image-quality" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/image-quality" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>After size, quality is the next number you meet when shrinking photos. It is a single value between 0 and 1, and it rarely comes with any explanation of what it decides. The short answer: <b>leave it near 0.8 and move on.</b> What follows is why, and the cases where you should depart from it.</p>
+
+<h2>What the quality value actually does</h2>
+<p>JPEG and WebP are <b>lossy</b> formats. They do not store the original exactly; they throw some of it away to make the file smaller. And they do not discard at random — they discard <b>what the human eye notices least, first.</b></p>
+<p>Our eyes are sensitive to changes in brightness and much less so to changes in colour. We also track gradual shifts across a broad area well, while missing abrupt detail in small ones. Compression exploits exactly that: colour information goes first, then fine detail gets smoothed away.</p>
+<p>So the quality value is not "how sharp" but <b>"how much to throw away."</b> Lower it and more goes; the point where the losses become visible shifts a little with every image and every viewer.</p>
+
+<h2>Why 0.8 is the default</h2>
+<p>What you discard and what you can see do not scale together. Roughly:</p>
+<table>
+<tr><th>Quality</th><th>File size</th><th>What you can see</th></tr>
+<tr><td>0.95</td><td>very large</td><td>indistinguishable from 0.85</td></tr>
+<tr><td>0.85</td><td>large</td><td>effectively the original</td></tr>
+<tr><td>0.80</td><td>moderate</td><td>differences only on close inspection</td></tr>
+<tr><td>0.70</td><td>small</td><td>mottling starts in skies and skin</td></tr>
+<tr><td>0.50</td><td>very small</td><td>obvious blocky patterning</td></tr>
+</table>
+<p>Going from 0.8 to 0.95 nearly doubles the file while almost nobody can tell the two apart on screen. Drop below 0.7 and it degrades fast. <b>The returns bend at around 0.8</b>, which is why that is the default.</p>
+
+<h2>Where different images diverge</h2>
+<ul>
+<li><b>Ordinary photos</b> — 0.75 to 0.85. Landscapes, food and product shots look essentially identical across that range.</li>
+<li><b>Portraits</b> — lean towards 0.85. Skin is a broad, gentle gradient, which is the first place compression artefacts show.</li>
+<li><b>Photos with large skies or flat backgrounds</b> — also towards 0.85, for the same reason: banding appears there first.</li>
+<li><b>Noisy photos</b> — raising quality only grows the file without improving anything. To the compressor, noise is detail that cannot be discarded, so it is expensive. 0.75 is fine.</li>
+<li><b>Screenshots, logos, diagrams, text</b> — <b>switch to PNG instead of adjusting quality.</b> Lossy compression on lines and flat colour leaves fuzzy edges around letters and often produces a <i>larger</i> file.</li>
+</ul>
+
+<h2>PNG has no quality setting</h2>
+<p>PNG is <b>lossless</b>, so nothing is discarded and moving the slider changes nothing. This tool says so on screen when you pick PNG, precisely so you do not spend time adjusting a control that has no effect.</p>
+<p>To make a PNG smaller you have to <b>reduce its dimensions or its number of colours</b>, not its quality. Saving a photograph as PNG multiplies its size, so photographs belong in WebP or JPEG from the start.</p>
+
+<h2>Do not compress twice</h2>
+<p>Saving an existing JPEG as JPEG again <b>discards on top of what was already discarded.</b> This is generation loss. Pushing quality to 1.0 does not bring back information that is already gone; it only makes the file bigger.</p>
+<p>A photo that arrived through a messaging app has already been compressed once. Shrinking it again makes twice. Work <b>from the original in one pass</b> where you can. When there is no original, set quality a little higher, around 0.85, to be safe.</p>
+
+<h2>Where to look when checking</h2>
+<p>The <a href="./">Bulk Image Resizer</a> shows the before and after sizes and the percentage saved once it finishes. More useful than the numbers is looking, and there are specific places to look.</p>
+<ul>
+<li><b>Broad skies or plain walls</b> — check for banding</li>
+<li><b>Skin</b> — check whether smooth areas have picked up a grainy texture</li>
+<li><b>Edges of text and lines</b> — check for smearing or shadowing</li>
+</ul>
+<p>If those three are clean, the rest will be. To try a different setting you do not need to re-add the files: change the value, press convert again, and the same images are reprocessed.</p>
+
+<h2>Size or quality first?</h2>
+<p><b>Size does far more work.</b> Shrinking to 1600 pixels at quality 0.8 gives a much smaller file that looks better on screen than keeping 4000 pixels at 0.95, because only 1600 pixels are ever drawn.</p>
+<p>So the order is: <b>get the dimensions right, then think about quality.</b> With the dimensions right, the default quality rarely needs touching. Which dimensions to use is covered in <a href="image-sizes">image dimensions by use</a>.</p>
+  <p class="back"><a href="./">Open the Bulk Image Resizer</a></p>
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="./">Bulk Image Resizer</a> ·
+  <a href="/en/privacy#imagesquish">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+</body>
+</html>

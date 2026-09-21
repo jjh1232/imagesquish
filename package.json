@@ -6,6 +6,7 @@
     "check:links": "node test/links.js",
     "deploy": "npm run check:links && npx wrangler deploy",
     "serve": "npx --yes serve site",
-    "og": "\"${CHROME:-/c/Program Files/Google/Chrome/Application/chrome.exe}\" --headless --disable-gpu --screenshot=site/og.png --window-size=1200,630 --hide-scrollbars test/og.html"
+    "og": "\"${CHROME:-/c/Program Files/Google/Chrome/Application/chrome.exe}\" --headless --disable-gpu --screenshot=site/og.png --window-size=1200,630 --hide-scrollbars test/og.html",
+    "verify": "node test/verify.js"
   }
 }
