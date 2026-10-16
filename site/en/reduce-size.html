@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>How to reduce image file size — shrink many photos without visible loss | prelaps</title>
+<meta name="description" content="Reduce the file size of photos and images: why cutting pixels saves far more than lowering quality, which sizes to use, and how to shrink a whole batch in the browser.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/en/reduce-size">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/reduce-size">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/reduce-size">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/reduce-size">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/reduce-size">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/en/reduce-size">
+<meta property="og:title" content="How to reduce image file size — shrink many photos without visible loss">
+<meta property="og:description" content="Reduce the file size of photos and images: why cutting pixels saves far more than lowering quality, which sizes to use, and how to shrink a whole batch in the browser.">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to reduce image file size — shrink many photos without visible loss",
+  "description": "Reduce the file size of photos and images: why cutting pixels saves far more than lowering quality, which sizes to use, and how to shrink a whole batch in the browser.",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/en/reduce-size",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/en">prelaps</a> · <a href="./">Bulk Image Resizer</a></p>
+    <h1>How to reduce image file size — shrink many photos without visible loss</h1>
+    <p class="tagline">Reducing the pixel size saves far more than lowering the quality.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/reduce-size" hreflang="ko">한국어</a>
+    <a href="../en/reduce-size" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/reduce-size" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>Email attachment limits, upload caps on forums and marketplaces. A phone photo is 3–8 MB, so a few of them are enough to hit the limit. There are two ways to make them smaller, and which one you start with makes a big difference.</p>
+
+<h2>Two things decide file size</h2>
+<ul>
+<li><b>Dimensions (pixels)</b> — width × height. Phone photos are typically around 4000×3000.</li>
+<li><b>Quality (compression)</b> — how carefully those pixels are stored.</li>
+</ul>
+<p><b>Reduce the dimensions first.</b> Halving width and height leaves a quarter of the pixels, and the file shrinks roughly as much. On screen it looks the same, because a 4000 px photo was usually being shown 1000 px wide anyway.</p>
+<p>Lower the quality only after that. Push quality too far and the damage shows, and it never saves as much as resizing.</p>
+
+<h2>Shrinking a batch</h2>
+<ul>
+<li>Drop all the photos into <a href="./">Bulk Image Resizer</a>. There is no limit on the number.</li>
+<li>Under <b>Size</b>, choose <b>Long edge</b> and enter a number: about 1600 px for a blog or listing, 1280 px for email. Landscape and portrait photos in the same batch shrink the same way, by their longer side.</li>
+<li>For <b>Format</b>, choose <b>WebP</b> if the destination accepts it, otherwise <b>JPEG</b>.</li>
+<li>Leave quality at the default 0.80.</li>
+<li>Press <b>Convert</b>. Each file shows its new size. Use <b>Download as zip</b> to get them all.</li>
+</ul>
+<p>Images already smaller than the target are not enlarged — upscaling makes them blurrier and bigger.</p>
+
+<h2>How small do they get?</h2>
+<p>A typical phone photo (4000×3000, around 4 MB) resized to a 1600 px long edge as JPEG at 0.80 usually ends up at a few hundred KB. It varies: wide skies compress well, busy textures like foliage less so.</p>
+<p>The tool does not target an exact size such as "under 100 KB". If you have a hard limit, lower the long edge a step and press Convert again — you do not need to add the files again; new settings apply to the same files. For ID photos with a size rule, the <a href="/idphoto/en">ID photo size fitter</a> has a file-size cap that does target KB.</p>
+
+<h2>When not to shrink</h2>
+<ul>
+<li><b>Photos you will print</b> — screen-sized files print blurry. Keep the originals.</li>
+<li><b>Your archive</b> — the tool never changes the original and always saves new files, but do not overwrite originals with the smaller copies.</li>
+</ul>
+<p>How low quality can go is covered in <a href="image-quality">what quality setting to use</a>.</p>
+  <p class="back"><a href="./">Open the Bulk Image Resizer</a></p>
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="./">Bulk Image Resizer</a> ·
+  <a href="/en/privacy#imagesquish">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>PNG to JPG — when it shrinks the file, and when it should stay PNG | prelaps</title>
+<meta name="description" content="How to convert PNG to JPG, which images shrink a lot and which get worse, what happens to transparent backgrounds, and how to convert many files at once in the browser.">
+
+<!-- canonical·hreflang·og:url 은 반드시 prelaps.com 절대 URL.
+     확장자 없는 형태다 — 자산 층이 .html 을 이쪽으로 301 하므로
+     .html 을 적으면 모든 링크에 리다이렉트가 한 번씩 붙는다. -->
+<link rel="canonical" href="https://prelaps.com/imagesquish/en/png-to-jpg">
+<link rel="alternate" hreflang="ko" href="https://prelaps.com/imagesquish/ko/png-to-jpg">
+<link rel="alternate" hreflang="en" href="https://prelaps.com/imagesquish/en/png-to-jpg">
+<link rel="alternate" hreflang="ja" href="https://prelaps.com/imagesquish/ja/png-to-jpg">
+<link rel="alternate" hreflang="x-default" href="https://prelaps.com/imagesquish/en/png-to-jpg">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://prelaps.com/imagesquish/en/png-to-jpg">
+<meta property="og:title" content="PNG to JPG — when it shrinks the file, and when it should stay PNG">
+<meta property="og:description" content="How to convert PNG to JPG, which images shrink a lot and which get worse, what happens to transparent backgrounds, and how to convert many files at once in the browser.">
+<meta property="og:image" content="https://prelaps.com/imagesquish/og.png">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "PNG to JPG — when it shrinks the file, and when it should stay PNG",
+  "description": "How to convert PNG to JPG, which images shrink a lot and which get worse, what happens to transparent backgrounds, and how to convert many files at once in the browser.",
+  "inLanguage": "en",
+  "mainEntityOfPage": "https://prelaps.com/imagesquish/en/png-to-jpg",
+  "author": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" },
+  "publisher": { "@type": "Organization", "name": "prelaps", "url": "https://prelaps.com/" }
+}
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="arthead">
+  <div>
+    <p class="crumb"><a href="/en">prelaps</a> · <a href="./">Bulk Image Resizer</a></p>
+    <h1>PNG to JPG — when it shrinks the file, and when it should stay PNG</h1>
+    <p class="tagline">For photos, JPG is the right call. For text and screenshots, PNG usually is.</p>
+  </div>
+  <nav class="langs">
+    <a href="../ko/png-to-jpg" hreflang="ko">한국어</a>
+    <a href="../en/png-to-jpg" aria-current="true" hreflang="en">English</a>
+    <a href="../ja/png-to-jpg" hreflang="ja">日本語</a>
+  </nav>
+</header>
+
+<section class="about article">
+<p>"PNG files are not accepted." "File too large." Those are the two usual reasons to turn a PNG into a JPG. But converting is not always an improvement — it depends on what is in the picture.</p>
+
+<h2>PNG and JPG are good at different things</h2>
+<ul>
+<li><b>JPG</b> stores smooth, photographic images compactly by throwing away detail your eye barely notices.</li>
+<li><b>PNG</b> throws nothing away. For images made of text, lines and flat colour — screenshots, charts, logos — PNG is sharper and often smaller. It can also keep a transparent background.</li>
+</ul>
+<p>So a <b>photo saved as PNG</b> — common with screenshots of photos and some capture tools — shrinks dramatically as a JPG. A <b>screenshot full of text</b>, on the other hand, gets fuzzy edges around the letters and barely shrinks.</p>
+
+<h2>Converting several files</h2>
+<ul>
+<li>Drop the PNG files into <a href="./">Bulk Image Resizer</a> — as many as you like.</li>
+<li>Under <b>Format</b>, choose <b>JPEG</b>.</li>
+<li>Start with size on <b>Keep original</b> and quality at the default 0.80.</li>
+<li>Press <b>Convert</b>. Each file shows how much it shrank. Save them one by one or use <b>Download as zip</b>.</li>
+</ul>
+<p>If a result came out larger than the original, the result line says why — usually it is the text-and-lines case above. Keep those as PNG.</p>
+
+<h2>Transparent backgrounds turn white</h2>
+<p>Convert a logo or icon with a transparent background to JPG and <b>the transparent area is filled with white</b>, because JPG has no transparency. That is fine on a white page; on a coloured background, keep it as PNG or choose <b>WebP</b>, which keeps transparency.</p>
+
+<h2>What about WebP instead?</h2>
+<p>If the place you are uploading to accepts WebP, it is the better choice: smaller than JPG at the same quality, and it keeps transparency. Some forms still only take JPG or PNG, so check first.</p>
+  <p class="back"><a href="./">Open the Bulk Image Resizer</a></p>
+</section>
+
+<footer>
+  <a href="/en">prelaps home</a> ·
+  <a href="./">Bulk Image Resizer</a> ·
+  <a href="/en/privacy#imagesquish">Privacy</a> ·
+  <a href="/en/terms">Terms</a> ·
+  <a href="/en/contact">Contact</a>
+</footer>
+
+</div>
+
+</body>
+</html>
